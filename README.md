@@ -40,7 +40,7 @@
 | ------------- |:-------------:| :-------------:|
 | username | test-merchant(Örnek) | Kullanıcı adı | 
 | password | 123456(Örnek) | Kullanıcı şifresi | 
-| client_id | a6b2423e-f621-4ddf-84f1-e102acbe5c1b(Örnek) | Merchant servisid'si | 
+| client_id | a6b2423e-f621-4ddf-84f1-e102acbe5c1b(Örnek) | Merchant servis id'si | 
 | client_secret | 4e7108f7-192d-4389-95d1-7cf216e1d21b(Örnek) | Merchant servis secret'i |
 | grant_type | password | Sabit |  
 
@@ -82,16 +82,18 @@
 | ------------- |:-------------:| :-------------:|
 | version | 1 | Sabit |
 | idempotencyId | d60842d2-4f1f-4231-8a9d-86fa49985824(Örnek) | Unique bir UUID |  
-| userId | 12345678901(Örnek) | Hangi user'a ödeme gönderileceği |  
+| userId | 12345678901(Örnek) | Hangi user'a ödeme gönderileceği. OpenID'den dönen token'ın içindeki "sub" değeri |  
 | merchantServiceUUID | 37b12626-a064-44e5-bbcf-31a9e42a0774(Örnek) | Ödeme servisinin UUID'si | 
 | merchantCallback | https://domain.com(Örnek) | Ödeme sonucunun geleceği adres |  
 | transactionTimeout | 59(Örnek) | Ödeme zaman aşım süresi (dakika) |  
-| merchantId | 7eadbeae-85c1-43d8-aece-abc9f281dde(Örnek) | Satıcı uygulama id'si | 
-| amount | 100(Örnek) | Ödemenin ne kadar tuttuğu |  
+| merchantId | 37b12626-a064-44e5-bbcf-31a9e42a0774(Örnek) | Ödeme servisinin UUID'si | 
+| amount | 100(Örnek) | Ödemenin ne kadar tuttuğu(kuruş veya cent cinsinden, 100 ise 100 kuruş = 1 lira) |  
 | currency | EUR(Örnek) | Ödeme para birimi|  
 | paymentContent | paymentContent Array (Örnek) | Ödeme sepetinin içeriği|  
+| paymentType | paymentRequest (Örnek) | Ödeme tipi|
+| processId | "e11067af-7f74-41e5-b8c4-dd17b440f51e\|client_id\|" + uuidv4() (Örnek) | İşlemi belirten unique bir ID|
 
-**paymentContent**
+**paymentContent Detaylı Açıklama**
 * Bu obje sepetteki objeleri liste olarak tutar. 
 
 **Sepet Objesi**
@@ -99,6 +101,36 @@
 | ------------- |:-------------:| :-------------:|
 | key | Ayakkabı(Örnek) | Alınan şeyin ismi | 
 | value | 12.03 TRY(Örnek) | Alınan şeyin değeri  | 
+
+
+**merchantCallback Deatylı Açıklama**
+* Ödeme sonucu belirtilen adrese aşağıdaki gibi gelir;
+
+```json
+{
+  "processId": "5b8c7f50-a2fb-8efd-c981-949bbd4ceecc|4f584f6d-e64c-4e1d-ac80-8b6f300ca066|chat01", 
+  "transactionStatus": "FINISHED",
+  "transactionMessage": "Transaction was paid successfully"
+}
+```
+
+**Mümkün Olan transactionStatus Durumları**
+
+| Durum        | Açıklama | 
+| ------------- |:-------------:|
+| NEW | Yeni başlatıldı |
+| PROCESSING | İşlemde |
+| PROCESSING_3D_SECURE | 3D Secure ile işlemde |
+| PROCESSING_DIGITAL | Digital işlemde |
+| NOTIFICATION | Bildirim |
+| FINISHED | Tamamlandı |
+| CANCELLED | İptal edildi |
+| CLOSED | Kapatıldı |
+| TIMEOUT | Zaman aşımı |
+| ERROR | Hata |
+| VOID | Geçersiz |
+| REFUND | İade |
+
 
 **Örnek Gönderilecek İstek**
 ```json
@@ -110,7 +142,7 @@
   "merchantServiceUUID": "37b12626-a064-44e5-bbcf-31a9e42a0774",
   "merchantCallback": "https://domain.com",
   "transactionTimeout": 59,
-  "merchantId": "dfa69ef4-17e6-4652-a9d7-964b13494565",
+  "merchantId": "37b12626-a064-44e5-bbcf-31a9e42a0774",
   "amount": 100,
   "currency": "EUR",
   "paymentContent": [
@@ -143,7 +175,9 @@
         "key": "Seventh Value",
         "value": "Any Value"
       }    
-  ]]
+  ]],
+  "paymentType":"paymentRequest",
+  "processId":"e11067af-7f74-41e5-b8c4-dd17b440f51e|9f0022ae-8b0b-4165-a164-3ded334a7fe4|d60842d2-4f1f-4231-8a9d-86fa49985824"
 }
 ```
 **Örnek Başarılı Cevap**
@@ -178,13 +212,13 @@
 | ------------- |:-------------:| :-------------:|
 | merchantServiceUUID | a6b2423e-f621-4ddf-84f1-e102acbe5c1b(Örnek) | Ödeme servisinin UUID'si | 
 | transactionID | 3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370(Örnek) | Ödeme id'si|  
-| merchantId | dfa69ef4-17e6-4652-a9d7-964b13494565(Örnek) | Ödeme uygulama id'si | 
+| merchantId | dfa69ef4-17e6-4652-a9d7-964b13494565(Örnek) | Ödeme servisinin UUID'si | 
 
 **Örnek Gönderilecek İstek**
 ```json
 
 {
-  "merchantId": "dfa69ef4-17e6-4652-a9d7-964b13494565",
+  "merchantId": "a6b2423e-f621-4ddf-84f1-e102acbe5c1b",
   "transactionId" : " 3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370",
   "merchantServiceUUID" : "a6b2423e-f621-4ddf-84f1-e102acbe5c1b",
 }
@@ -197,6 +231,7 @@
   "transactionMessage" : "Inquire status in progress"
 }
 ```
+
 ### Ödemeyi İptal Etme
 <br/>
 * Bu endpoint kullanıcıya atılan ödeme isteğini iptal etmeye yarar. 
@@ -219,14 +254,14 @@
 | ------------- |:-------------:| :-------------:|
 | merchantServiceUUID | a6b2423e-f621-4ddf-84f1-e102acbe5c1b(Örnek) | Ödeme servisinin UUID'si | 
 | transactionID | 3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370(Örnek) | Ödeme id'si|  
-| merchantId | dfa69ef4-17e6-4652-a9d7-964b13494565(Örnek) | Ödeme uygulama id'si | 
+| merchantId | dfa69ef4-17e6-4652-a9d7-964b13494565(Örnek) | Ödeme servisinin UUID'si | 
 
 **Örnek Gönderilecek İstek**
 ```json
 
 {
-  "merchantId": "dfa69ef4-17e6-4652-a9d7-964b13494565",
-  "transactionId" : " 3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370",
+  "merchantId": "a6b2423e-f621-4ddf-84f1-e102acbe5c1b",
+  "transactionId" : "3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370",
   "merchantServiceUUID" : "a6b2423e-f621-4ddf-84f1-e102acbe5c1b",
 }
 ```
@@ -235,5 +270,6 @@
 { 
   "transactionId" : "3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370",
   "transactionStatus" : "cancellation",
-  "transactionMessage" : "Cancel request in progress"}
+  "transactionMessage" : "Cancel request in progress"
+}
 ```
