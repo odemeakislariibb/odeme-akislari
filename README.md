@@ -103,7 +103,7 @@
 | value | 12.03 TRY(Örnek) | Alınan şeyin değeri  | 
 
 
-**merchantCallback Deatylı Açıklama**
+**merchantCallback Detaylı Açıklama**
 * Ödeme sonucu belirtilen adrese aşağıdaki gibi gelir;
 
 ```json
