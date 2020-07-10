@@ -89,9 +89,7 @@
 | merchantId | 37b12626-a064-44e5-bbcf-31a9e42a0774(Örnek) | Ödeme servisinin UUID'si | 
 | amount | 100(Örnek) | Ödemenin ne kadar tuttuğu(kuruş veya cent cinsinden, 100 ise 100 kuruş = 1 lira) |  
 | currency | EUR(Örnek) | Ödeme para birimi|  
-| paymentContent | paymentContent Array (Örnek) | Ödeme sepetinin içeriği|  
-| paymentType | paymentRequest (Örnek) | Ödeme tipi|
-| processId | "e11067af-7f74-41e5-b8c4-dd17b440f51e\|client_id\|" + uuidv4() (Örnek) | İşlemi belirten unique bir ID|
+| paymentContent | paymentContent Array (Örnek) | Ödeme sepetinin içeriği|
 
 **paymentContent Detaylı Açıklama**
 * Bu obje sepetteki objeleri liste olarak tutar. 
@@ -175,9 +173,7 @@
         "key": "Seventh Value",
         "value": "Any Value"
       }    
-  ]],
-  "paymentType":"paymentRequest",
-  "processId":"e11067af-7f74-41e5-b8c4-dd17b440f51e|9f0022ae-8b0b-4165-a164-3ded334a7fe4|d60842d2-4f1f-4231-8a9d-86fa49985824"
+  ]]
 }
 ```
 **Örnek Başarılı Cevap**
