@@ -106,7 +106,7 @@
 
 ```json
 {
-  "processId": "5b8c7f50-a2fb-8efd-c981-949bbd4ceecc|4f584f6d-e64c-4e1d-ac80-8b6f300ca066|chat01", 
+  "transactionId": "3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370", 
   "transactionStatus": "FINISHED",
   "transactionMessage": "Transaction was paid successfully"
 }
