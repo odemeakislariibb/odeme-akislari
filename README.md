@@ -107,8 +107,8 @@
 ```json
 {
   "transactionId": "3c7ebce6-e3bc-4e45-ae9b-a0eebcb1e370", 
-  "transactionStatus": "FINISHED",
-  "transactionMessage": "Transaction was paid successfully"
+  "status": "FINISHED",
+  "message": "Transaction was paid successfully"
 }
 ```
 
